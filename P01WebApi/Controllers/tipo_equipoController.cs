@@ -60,7 +60,7 @@ namespace P01WebApi.Controllers
                                    where e.id_tipo_equipo == id
                                    select e).FirstOrDefault();
 
-            if (tipoequipoExiste == null)
+            if (tipoequipoExiste == null) 
                 return NotFound();
 
             tipoequipoExiste.descripcion = tipoequipoModificar.descripcion;
