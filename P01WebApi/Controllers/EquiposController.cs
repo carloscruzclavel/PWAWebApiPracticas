@@ -21,6 +21,12 @@ namespace P01WebApi.Controllers
         [Route("getall")]
         public IActionResult ObtenerEquipos() {
             List<equipos> listadoEquipo = (from e in _equiposContext.equipos
+                                           join t in _equiposContext.tipo_equipo
+                                           on e.tipo_equipo_id equals t.id_tipo_equipo
+                                           join m in _equiposContext.marcas
+                                           on e.marca_id equals m.id_marcas
+                                           join es in _equiposContext.estados_equipo
+                                           on e.estado_equipo_id equals es.id_estados_equipo
                                            where e.estado == "A"
                                            select e).ToList();
             if (listadoEquipo.Count == 0) { return NotFound(); }
@@ -31,9 +37,6 @@ namespace P01WebApi.Controllers
         // SEGUNDA CLASEEE EJEMPLO DE URL, SI NO PONEMOS {ID} TENEMOS QUE PONERLO EN LA URL
 
         // localhost:4455/api/equipos/getbyid/23/
-
-
-        // consultar por ID
 
         [HttpGet]
         [Route("getbyid/{id}")]
@@ -46,6 +49,11 @@ namespace P01WebApi.Controllers
 
             return Ok(unEquipo);
         }
+
+
+        // consultar por ID
+
+
 
         // Buscar por nombre
 
