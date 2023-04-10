@@ -2,12 +2,11 @@
 
 namespace P01WebApi.Models
 {
-    public class tipo_equipo
+    public class estados_reserva
     {
         [Key]
 
-        public int id_tipo_equipo { get; set; }
-        public string? descripcion { get; set; }
+        public int estado_res_id { get; set; }
         public string? estado { get; set; }
     }
 }

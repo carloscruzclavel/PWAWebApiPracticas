@@ -22,7 +22,8 @@ namespace P01WebApi.Controllers
         public IActionResult ObtenerMarcas()
         {
             List<tipo_equipo> listadoTipoequipo = (from e in _equiposContext.tipo_equipo
-                                          select e).ToList();
+                                                   where e.estado == "A"
+                                                   select e).ToList();
             if (listadoTipoequipo.Count == 0) { return NotFound(); }
 
             return Ok(listadoTipoequipo);
@@ -60,7 +61,7 @@ namespace P01WebApi.Controllers
                                    where e.id_tipo_equipo == id
                                    select e).FirstOrDefault();
 
-            if (tipoequipoExiste == null) 
+            if (tipoequipoExiste == null)
                 return NotFound();
 
             tipoequipoExiste.descripcion = tipoequipoModificar.descripcion;
@@ -71,7 +72,6 @@ namespace P01WebApi.Controllers
 
             return Ok(tipoequipoExiste);
         }
-
 
 
         [HttpDelete]
