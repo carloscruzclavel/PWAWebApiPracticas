@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using P01WebApi.Models;
 
 namespace P01WebApi.Controllers
@@ -38,7 +39,68 @@ namespace P01WebApi.Controllers
 
         }
 
-        
+        [HttpPost]
+        [Route("add/{id}")]
+
+        public IActionResult crearCarrera([FromBody] carreras carreraNuevo)
+        {
+            try
+            {
+                _equiposContext.carreras.Add(carreraNuevo);
+                _equiposContext.SaveChanges();
+
+                return Ok(carreraNuevo);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+        [HttpPut]
+        [Route("actualizar/{id}")]
+
+        public IActionResult actualizarCarrera(int id, [FromBody] carreras carreraModificar)
+        {
+            carreras? carreraExiste = (from e in _equiposContext.carreras
+                                     where e.carrera_id == id
+                                     select e).FirstOrDefault();
+
+            if (carreraExiste == null)
+                return NotFound();
+
+            carreraExiste.nombre_carrera = carreraModificar.nombre_carrera;
+            carreraExiste.facultad_id = carreraModificar.facultad_id;
+
+            _equiposContext.Entry(carreraExiste).State = EntityState.Modified;
+            _equiposContext.SaveChanges();
+
+            return Ok(carreraExiste);
+        }
+
+
+        [HttpDelete]
+        [Route("delete/{id}")]
+
+        public IActionResult eliminarCarrera(int id)
+        {
+            carreras? carreraExiste = (from e in _equiposContext.carreras
+                                     where e.carrera_id == id
+                                     select e).FirstOrDefault();
+            if (carreraExiste == null) return NotFound();
+
+            _equiposContext.carreras.Attach(carreraExiste);
+            _equiposContext.carreras.Remove(carreraExiste);
+            _equiposContext.SaveChanges();
+
+            return Ok(carreraExiste);
+        }
+
+
 
     }
 }
